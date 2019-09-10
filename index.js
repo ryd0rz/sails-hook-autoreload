@@ -108,9 +108,8 @@ module.exports = function(sails) {
         //  Reload controller middleware
         sails.hooks.controllers.loadAndRegisterControllers(function() {
 
-          // Wait for the ORM to reload
-          sails.once('hook:orm:reloaded', function() {
-
+          // Wait for Sequelize to reload
+          sails.hooks.sequelize.reload((err) => {
             // Reload policies
             if (sails.hooks.policies) {
               sails.hooks.policies.initialize(function() {});
@@ -155,8 +154,7 @@ module.exports = function(sails) {
             if (sails.hooks.blueprints) {
               sails.hooks.blueprints.bindShadowRoutes();
             }
-
-          });
+          })
 
           // Get every sails-postgresql connection name
           var sailsPostgreConnections = _.reduce(sails.config.connections, function (result, val, key) {
@@ -172,7 +170,9 @@ module.exports = function(sails) {
           });
           
           // Reload ORM
-          sails.emit('hook:orm:reload');
+          console.log('HOT RELOADED!');
+          console.log('Disclaimer: Things like "jobs" that run in a different process are not hot reloaded.');
+          console.log('Please restart server if you suspect discrepency in new changes.');
 
         });
 
