@@ -51,6 +51,10 @@ module.exports = function(sails) {
           // Otherwise turn off in production environment, on for all others
           sails.config[this.configKey].active : 
             (sails.config.environment != 'production');
+
+      if (!process.env.HOT_RELOAD || process.env.HOT_RELOAD === 'false') {
+        sails.config[this.configKey].active = false;
+      }
     },
 
     /**
