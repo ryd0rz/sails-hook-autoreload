@@ -52,7 +52,7 @@ module.exports = function(sails) {
           sails.config[this.configKey].active : 
             (sails.config.environment != 'production');
 
-      if (!process.env.HOT_RELOAD || process.env.HOT_RELOAD === 'false') {
+      if (process.env.HOT_RELOAD === 'false') {
         sails.config[this.configKey].active = false;
       }
     },
