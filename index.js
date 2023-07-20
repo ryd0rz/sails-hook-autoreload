@@ -172,6 +172,14 @@ module.exports = function(sails) {
               sails.log.info("DB connection '%s' teared down.", connection);
             });
           });
+
+          // Re-initialize redis cache
+          const withCache = sails.config.withCache;
+          if (withCache) {
+            Object.keys(sails.models).forEach(key => {
+              withCache(sails.models[key])
+            });
+          }
           
           // Reload ORM
           console.log('HOT RELOADED!');
